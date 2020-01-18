@@ -8,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./style/LexaN.css">
-    <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="/PD/resources/style/LexaN.css">
+    <link rel="stylesheet" href="/PD/resources/style/style.css">
     <title>Prijava</title>
 </head>
 <body>
-    <img src="./imgs/logo.png" alt="" class="background">
+    <img src="/PD/resources/imgs/logo.png" alt="" class="background">
     <div class="login-center">
         <div class="card-basic-out" style="width: 300px; background-color: rgba(255, 255, 255, 0.7);">
             <center>
@@ -26,7 +26,7 @@
                     <input type="password" name="password" class="input-f-basic" minlength="6"  title="Unesite Å¡ifru" required> <br><br>
                     <button class="btn-basic-out" type="submit">Prijava</button><br><br>
                     <a href="#" class="txt-color-basic" onclick="registracija()"><small>Nemate nalog? Registruj se!</small></a>
-                    <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  -->
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </center>
          </div>

@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import model.Korisnik;
 
 public class CustomUserDetail implements UserDetails {
-
+	
+	private static final long serialVersionUID = 8454563604940445837L;
+	
 	private Korisnik k;
 	
 	public Korisnik getK() {
@@ -26,7 +28,10 @@ public class CustomUserDetail implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + k.getUloga().getTip().toString())); //getTipVracaByte(Enum iz tabele.. VARBINARY)
+		
+		String role = k.getUloga() == null? "NijeClan" : k.getUloga().getTip().toString();
+		
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 		return authorities;
 	}
 	@Override

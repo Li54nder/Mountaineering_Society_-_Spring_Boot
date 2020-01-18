@@ -8,16 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./style/LexaN.css">
-    <link rel="stylesheet" href="./style/style.css">
-    <script src="./script/script.js"></script>
+    <link rel="stylesheet" href="/PD/resources/style/LexaN.css">
+    <link rel="stylesheet" href="/PD/resources/style/style.css">
+    <script src="/PD/resources/script/script.js"></script>
     <title>Početna</title>
 </head>
 <body>
     <script>getHeader();</script>
     
     <div class="logo">
-        <img src="./imgs/logo.png" alt="">
+        <img src="/PD/resources/imgs/logo.png" alt="">
     </div>
     
     <hr>
@@ -127,6 +127,6 @@
             </div>
         </div>
     </div>
-    <script src="./script/LexaN.js"></script>
+    <script src="/PD/resources/script/LexaN.js"></script>
 </body>
 </html>

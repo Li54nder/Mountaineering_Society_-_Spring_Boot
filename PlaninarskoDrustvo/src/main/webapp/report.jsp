@@ -8,21 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./style/LexaN.css">
-    <link rel="stylesheet" href="./style/style.css">
-    <script src="./script/script.js"></script>
+    <link rel="stylesheet" href="/PD/resources/style/LexaN.css">
+    <link rel="stylesheet" href="/PD/resources/style/style.css">
+    <script src="/PD/resources/script/script.js"></script>
     <title>IzveÅ¡taji</title>
 </head>
 <body>
-    <header class="header-basic-out">
-        <a href="index.html">PoÄetna</a>
-        <a href="reservation.html">Rezervacije</a>
-        <img src="./imgs/logo.png" alt="">
-        <a href="#">IzveÅ¡taji</a>
-        <form action="" method="POST">
-            <input type="submit" value="Odjavi se" style="border: 0; background-color: transparent; font-size: 15px; cursor: pointer; outline: none;" class="txt-color-basic">
-        </form>
-    </header>
+    <script>getHeader();</script>
 
     <div class="sekcija">
         <h1 class="txt-color-basic">IzveÅ¡taji/Slike za planinu...</h1>
@@ -74,7 +66,7 @@
             <h1 class="txt-color-basic">Galerija izveÅ¡taja i slika za planinu: ${planina}</h1>
             <div class="galerija">
                 <div class="img">
-                    <img src="./imgs/avatar.png" alt="">
+                    <img src="/PD/resources/imgs/avatar.png" alt="">
                     <span><i>Autor: Ime Prezime</i></span>
                 </div>
                 <div class="izv">
@@ -84,26 +76,26 @@
                     <span>Ime Prezime</span>
                 </div>
                 <div class="img">
-                    <img src="./imgs/avatar.png" alt="">
+                    <img src="/PD/resources/imgs/avatar.png" alt="">
                     <span><i>Autor: Ime Prezime</i></span>
                 </div>
                 <div class="img">
-                    <img src="./imgs/avatar.png" alt="">
+                    <img src="/PD/resources/imgs/avatar.png" alt="">
                     <span><i>Autor: Ime Prezime</i></span>
                 </div>
                 <div class="img">
-                    <img src="./imgs/avatar.png" alt="">
+                    <img src="/PD/resources/imgs/avatar.png" alt="">
                     <span><i>Autor: Ime Prezime</i></span>
                 </div>
                 <div class="img">
-                    <img src="./imgs/avatar.png" alt="">
+                    <img src="/PD/resources/imgs/avatar.png" alt="">
                     <span><i>Autor: Ime Prezime</i></span>
                 </div>
             </div>
         </div>
     </div>
     
-    <script src="./script/LexaN.js"></script>
+    <script src="/PD/resources/script/LexaN.js"></script>
     <script>
         function showIzvestaj() {
             const komentar = document.querySelector(".ostaviKomentar");

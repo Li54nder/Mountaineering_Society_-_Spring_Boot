@@ -8,21 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./style/LexaN.css">
-    <link rel="stylesheet" href="./style/style.css">
-    <script src="./script/script.js"></script>
+    <link rel="stylesheet" href="/PD/resources/style/LexaN.css">
+    <link rel="stylesheet" href="/PD/resources/style/style.css">
+    <script src="/PD/resources/script/script.js"></script>
     <title>Znamenitosti</title>
 </head>
 <body>
-    <header class="header-basic-out">
-        <a href="index.html">PoÄetna</a>
-        <a href="reservation.html">Rezervacije</a>
-        <img src="./imgs/logo.png" alt="">
-        <a href="report.html">IzveÅ¡taji</a>
-        <form action="" method="POST">
-            <input type="submit" value="Odjavi se" style="border: 0; background-color: transparent; font-size: 15px; cursor: pointer; outline: none;" class="txt-color-basic">
-        </form>
-    </header>
+    <script>getHeader();</script>
+    
     <div class="opis">
         <h1 class="txt-color-basic">Znamenitost: ${taita}</h1>
         <h2 class="txt-color-basic"><i>Tip znamenitosti:</i> ${tip}</h2>
@@ -30,10 +23,10 @@
         <p style="text-align: justify;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dicta vitae accusantium fugiat quia totam non illum rerum, eius a excepturi, inventore explicabo quam perspiciatis nostrum impedit porro nam nulla. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae in nostrum labore? Vel, voluptatum quam fugit, ratione expedita quibusdam sint eos quas nihil eaque mollitia, minima veniam corporis ducimus velit.</p>
         <h2 class="txt-color-basic"><i>Galerija:</i></h2>
         <div class="galerija">
-            <img src="./imgs/avatar.png" alt="">
-            <img src="./imgs/avatar.png" alt="">
-            <img src="./imgs/avatar.png" alt="">  
-            <img src="./imgs/avatar.png" alt="">             
+            <img src="/PD/resources/imgs/avatar.png" alt="">
+            <img src="/PD/resources/imgs/avatar.png" alt="">
+            <img src="/PD/resources/imgs/avatar.png" alt="">  
+            <img src="/PD/resources/imgs/avatar.png" alt="">             
         </div>
     </div>
     <hr>
@@ -73,6 +66,6 @@
     </div>
     
     
-    <script src="./script/LexaN.js"></script>
+    <script src="/PD/resources/script/LexaN.js"></script>
 </body>
 </html>

@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="./style/LexaN.css">
-    <link rel="stylesheet" href="./style/style.css">
-    <script src="./script/script.js"></script>
+    <link rel="stylesheet" href="/PD/resources/style/LexaN.css">
+    <link rel="stylesheet" href="/PD/resources/style/style.css">
+    <script src="/PD/resources/script/script.js"></script>
     <title>Rezervacija</title>
 </head>
 <body>
@@ -67,31 +67,31 @@
         <div class="grid">
             <div class="card-basic-out">
                 <center>
-                    <img src="./imgs/avatar.png" alt="avatar">
+                    <img src="/PD/resources/imgs/avatar.png" alt="avatar">
                     <h2>TeÅ¾ina: ${tezina}</h2>
                     <div>
                         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <h3>Znamenitosti:</h3>
-                        <a href="sights.html" class="txt-color-basic">Znamenitost ta i ta...</a><br>
-                        <a href="sights.html" class="txt-color-basic">Znamenitost ta i ta...</a><br>
+                        <a href="/PD/Uloge/planinar/getSights" class="txt-color-basic">Znamenitost ta i ta...</a><br>
+                        <a href="/PD/Uloge/planinar/getSights" class="txt-color-basic">Znamenitost ta i ta...</a><br>
                     </div>
                 </center>
             </div>
             <div class="card-basic-out">
                 <center>
-                    <img src="./imgs/avatar.png" alt="avatar">
+                    <img src="/PD/resources/imgs/avatar.png" alt="avatar">
                     <h2>TeÅ¾ina: ${tezina}</h2>
                     <div>
                         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae adipisci provident rem repellat dignissimos perspiciatis porro quasi deserunt nostrum rerum expedita quos, voluptatem cumque itaque dolore qui officia corrupti unde?</p>
                         <h3>Znamenitosti:</h3>
-                        <a href="sights.html" class="txt-color-basic">Znamenitost ta i ta...</a><br>
-                        <a href="sights.html" class="txt-color-basic">Znamenitost ta i ta...</a><br>
+                        <a href="/PD/Uloge/planinar/getSights" class="txt-color-basic">Znamenitost ta i ta...</a><br>
+                        <a href="/PD/Uloge/planinar/getSights" class="txt-color-basic">Znamenitost ta i ta...</a><br>
                     </div>
                 </center>
             </div>
         </div>
     </div>
     
-    <script src="./script/LexaN.js"></script>
+    <script src="/PD/resources/script/LexaN.js"></script>
 </body>
 </html>
