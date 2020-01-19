@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,111 +23,125 @@
     
     <hr>
     
-    <div class="sekcija planinar">
-        <h1 class="nijeclan txt-color-basic">Još uvek niste član društva ili je istekla članarina</h1>
-        <div class="clan">
-            <center>
-                <h1 class="txt-color-basic">Dobrodošli $/planinar/</h1>
-            </center>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th></th>
-                        <th>Rezervisani domovi</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td colspan="3">$/dom/</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th></th>
-                        <th>Znamenitosti koje ste posećivali</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td colspan="3">${znamenitost}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th></th>
-                        <th>IzveÅ¡taji koje ste pisali</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td colspan="3">$/izvestajKojiNijeSlika/</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
+    <sec:authorize access="hasRole('Gost')">
+    	<div class="sekcija planinar">
+	        <h1 class="nijeclan txt-color-basic">Još uvek niste član društva ili je istekla članarina</h1>
+	    </div>
+    </sec:authorize>
+    
+    <sec:authorize access="hasRole('Planinar')">
+	    <div class="sekcija planinar">
+	        <div class="clan">
+	            <center>
+	                <h1 class="txt-color-basic">Dobrodošli $/planinar/</h1>
+	            </center>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th></th>
+	                        <th>Rezervisani domovi</th>
+	                        <th></th>
+	                    </tr>
+	                    <tr>
+	                        <td colspan="3">$/dom/</td>
+	                    </tr>
+	                </table>
+	            </div>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th></th>
+	                        <th>Znamenitosti koje ste posećivali</th>
+	                        <th></th>
+	                    </tr>
+	                    <tr>
+	                        <td colspan="3">${znamenitost}</td>
+	                    </tr>
+	                </table>
+	            </div>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th></th>
+	                        <th>IzveÅ¡taji koje ste pisali</th>
+	                        <th></th>
+	                    </tr>
+	                    <tr>
+	                        <td colspan="3">$/izvestajKojiNijeSlika/</td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>
+	    </div>
+    </sec:authorize>
 
-    <div class="sekretar">
-        <center>
-            <h1 class="txt-color-basic">Dobrodošli $/sekretar/</h1>
-        </center>
-        <div class="sekcija zahtevi">
-            <h1 class="txt-color-basic">Zahtevi za ućlanjenje u društvo</h1>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th>Ime</th>
-                        <th>Prezime</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>${ime}</td>
-                        <td>${prezime}</td>
-                        <td>Učlani</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="sekcija clanovi">
-            <h1 class="txt-color-basic">Članovi društva</h1>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th>Ime</th>
-                        <th>Prezime</th>
-                        <th>Učlanjen od</th>
-                        <th>Učlanjen do</th>
-                        <th>Produži članarinu</th>
-                    </tr>
-                    <tr>
-                        <td>${ime}</td>
-                        <td>${prezime}</td>
-                        <td>${datumOd}</td>
-                        <td>${datumDo}</td>
-                        <td>Produži</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="sekcija statistika">
-            <h1 class="txt-color-basic">Statistika rezervisanih noćenja</h1>
-            <div class="table">
-                <table class="table-basic">
-                    <tr>
-                        <th>Planina</th>
-                        <th></th>
-                        <th>Broj noćenja</th>
-                    </tr>
-                    <tr>
-                        <td>${planina}</td>
-                        <td>:</td>
-                        <td>${broj}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
+    <sec:authorize access="hasRole('Sekretar')">
+	    <div class="sekretar">
+	        <center>
+	            <h1 class="txt-color-basic">Dobrodošli <sec:authentication property="principal.ime"/> ${korisnik.prezime}</h1>
+	        </center>
+	        <div class="sekcija zahtevi">
+	            <h1 class="txt-color-basic">Zahtevi za ućlanjenje u društvo</h1>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th>Ime</th>
+	                        <th>Prezime</th>
+	                        <th></th>
+	                    </tr>
+	                    <c:forEach var="i" items="${zahtevi}">
+	                    <tr>
+	                        <td>${i.ime}</td>
+	                        <td>${i.prezime}</td>
+	                        <td><a href="/PD/admin/uclani?username=${i.korisnickoIme}">Učlani</a></td> 
+	                    </tr>
+	                    </c:forEach>
+	                </table>
+	            </div>
+	        </div>
+	        <div class="sekcija clanovi">
+	            <h1 class="txt-color-basic">Članovi društva</h1>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th>Ime</th>
+	                        <th>Prezime</th>
+	                        <th>Učlanjen od</th>
+	                        <th>Učlanjen do</th>
+	                        <th>Produži članarinu</th>
+	                    </tr>
+	                    <c:forEach var="i" items="${clanovi}">
+	                    <tr>
+	                        <td>${i.ime}</td>
+	                        <td>${i.prezime}</td>
+	                        <td>${i.clanarina.pocetak}</td>
+	                        <td>${i.clanarina.kraj}</td>
+	                        <td>Produži</td>
+	                    </tr>
+	                    </c:forEach>
+	                </table>
+	            </div>
+	        </div>
+	        <div class="sekcija statistika">
+	            <h1 class="txt-color-basic">Statistika rezervisanih noćenja</h1>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th>Planina</th>
+	                        <th></th>
+	                        <th>Broj noćenja</th>
+	                    </tr>
+	                    <tr>
+	                        <td>${planina}</td>
+	                        <td>:</td>
+	                        <td>${broj}</td>
+	                    </tr>
+	                </table>
+	            </div>
+	        </div>
+	    </div>
+	</sec:authorize>
+	
     <script src="/PD/resources/script/LexaN.js"></script>
 </body>
 </html>

@@ -19,11 +19,10 @@
             <center>
                 <h2>Prijavi se</h2>
                 <form action="${pageContext.request.contextPath}/login" method="POST">
-                    <input type="hidden" name="prijava" value="da">
                     <label class="lbl-basic ">Korisnicko ime</label><br>
                     <input type="username" name="username" class="input-f-basic" title="Unesite korisnicko ime" pattern="[A-Za-z\d]+" required> <br><br>
                     <label class="lbl-basic ">Sifra</label><br>
-                    <input type="password" name="password" class="input-f-basic" minlength="5"  title="Unesite Å¡ifru" required> <br><br>
+                    <input type="password" name="password" class="input-f-basic" minlength="6"  title="Unesite Å¡ifru" required> <br><br>
                     <button class="btn-basic-out" type="submit">Prijava</button><br><br>
                     <a href="#" class="txt-color-basic" onclick="registracija()"><small>Nemate nalog? Registruj se!</small></a>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -33,14 +32,15 @@
     </div>
     <script>
         function registracija() {
+            const form = document.getElementsByTagName('form')[0];
+            form.removeAttribute("action");
+            form.setAttribute("action", "/PD/registration");
             const h2 = document.getElementsByTagName('h2')[0];
-            const hidden = document.getElementsByName('prijava')[0];
             const btn = document.querySelector('.btn-basic-out');
             const a = document.getElementsByTagName('a')[0];
             const lbl = document.querySelectorAll('.lbl-basic')[0];
 
             h2.innerHTML = "Registurj se";
-            // hidden.value = "ne";
             btn.innerHTML = "Registracija";
             a.style.display = "none";
 

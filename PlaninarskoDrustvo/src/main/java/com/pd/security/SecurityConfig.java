@@ -38,10 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/guest/**").hasAnyRole("Sekretar", "Planinar", "Gost")
 				.antMatchers("/").permitAll()
 			.and().
-			    formLogin().
-			    	loginPage("/login.jsp").
-			    	loginProcessingUrl("/login").
-			    	defaultSuccessUrl("/guest");
+			    formLogin()
+			    	.loginPage("/login.jsp")
+			    	.loginProcessingUrl("/login")
+			    	.defaultSuccessUrl("/guest")
+			.and()
+//			    .exceptionHandling().accessDeniedPage("/pages/login.jsp?errMsg=loginFailed") //access_denied.jsp
+//			    .and()
+		    	.rememberMe()
+		    .and()
+		    	.csrf().disable();
 	}
 	
 	/*

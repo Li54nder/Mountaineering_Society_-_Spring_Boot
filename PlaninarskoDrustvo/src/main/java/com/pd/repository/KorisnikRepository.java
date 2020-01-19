@@ -10,4 +10,7 @@ public interface KorisnikRepository extends JpaRepository<Korisnik, Integer>{
 	
 	public Optional<Korisnik> findByKorisnickoIme(String korisnickoIme);
 
+//	public List<Korisnik> findAllWhereUlogaNull() {
+//		
+//	}
 }
