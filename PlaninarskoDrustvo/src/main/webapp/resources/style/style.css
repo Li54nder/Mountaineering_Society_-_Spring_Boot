@@ -30,6 +30,10 @@ header img {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color) inset !important;
+    -webkit-text-fill-color: white !important;
+}
 /* Index */
 .logo {
     margin: 50px;

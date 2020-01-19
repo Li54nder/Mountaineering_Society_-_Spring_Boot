@@ -1,42 +1,49 @@
 package com.pd.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-// Dodati pocetnu koja ce da vodi na login... ili nesto neki bin koji ce da dobavi login formu...
 
+//@RestController
 @Controller
-@RequestMapping("/Uloge")
+@RequestMapping("/")
 public class UlogeController {
 	
-	@GetMapping("/getLogin")
-	public String getLogin() {
+	@Autowired
+	HttpServletRequest request;
+	
+	@GetMapping("/")
+	public String home() {
 		return "login";
 	}
-	
-	@GetMapping("/index/getIndex")
-	public String getIndex() {
+	@GetMapping("/guest")
+	public String guest() {
+		String username = (String) request.getSession().getAttribute("username");
+		
+		System.err.println(username);
+		
 		return "index";
 	}
-
-	@GetMapping("/admin/metoda")
-	public String metoda() {
-		return "stranica sa necim u sesiji";
-	}
-	
-	@GetMapping("/planinar/getRezervacije")
+	@GetMapping("/user/getRezervacije")
 	public String getRezervacije() {
 		return "reservation";
 	}
-	
-	@GetMapping("/planinar/getReport")
+	@GetMapping("user/getReport")
 	public String getReport() {
 		return "report";
 	}
+	@GetMapping("/admin")
+	public String admin() {
+		return "index";
+	}
 	
+	/*
 	@GetMapping("/planinar/getSights")
 	public String getSights() {
 		return "sights";
-	}
+	}*/
 }

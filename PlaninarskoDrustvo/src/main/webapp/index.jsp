@@ -14,7 +14,8 @@
     <title>Početna</title>
 </head>
 <body>
-    <script>getHeader();</script>
+
+	<%@include file="./tmp/header.jsp" %>
     
     <div class="logo">
         <img src="/PD/resources/imgs/logo.png" alt="">

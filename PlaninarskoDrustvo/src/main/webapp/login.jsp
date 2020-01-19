@@ -23,7 +23,7 @@
                     <label class="lbl-basic ">Korisnicko ime</label><br>
                     <input type="username" name="username" class="input-f-basic" title="Unesite korisnicko ime" pattern="[A-Za-z\d]+" required> <br><br>
                     <label class="lbl-basic ">Sifra</label><br>
-                    <input type="password" name="password" class="input-f-basic" minlength="6"  title="Unesite Å¡ifru" required> <br><br>
+                    <input type="password" name="password" class="input-f-basic" minlength="5"  title="Unesite Å¡ifru" required> <br><br>
                     <button class="btn-basic-out" type="submit">Prijava</button><br><br>
                     <a href="#" class="txt-color-basic" onclick="registracija()"><small>Nemate nalog? Registruj se!</small></a>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

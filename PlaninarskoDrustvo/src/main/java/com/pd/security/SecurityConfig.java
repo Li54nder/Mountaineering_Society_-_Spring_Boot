@@ -9,18 +9,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 //import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
+//@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
- 	UserDetailsService userDetailsService; //UserDetailsProvider
+ 	UserDetailsService userDetailsService;
 	
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
+//		return NoOpPasswordEncoder.getInstance();
 		return new BCryptPasswordEncoder();
 	}
 	
@@ -29,8 +31,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    auth.userDetailsService(userDetailsService);
 	}
 
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.antMatchers("/user/**").hasRole("Planinar")
+				.antMatchers("/admin/**").hasRole("Sekretar")
+				.antMatchers("/guest/**").hasAnyRole("Sekretar", "Planinar", "Gost")
+				.antMatchers("/").permitAll()
+			.and().
+			    formLogin().
+			    	loginPage("/login.jsp").
+			    	loginProcessingUrl("/login").
+			    	defaultSuccessUrl("/guest");
+	}
+	
+	/*
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests(authorize -> {
+			authorize.antMatchers("/").permitAll();
+			authorize.antMatchers("/index/**").hasAnyRole("Sekretar", "Planinar", "NijeClan");
+			authorize.antMatchers("/admin/**").hasRole("Sekretar");
+			authorize.antMatchers("/planinar/**").hasRole("Planinar");
+		});
+		http.formLogin(login -> {
+			login.loginPage("/login.jsp"); // /PD
+			login.loginProcessingUrl("/login");
+			login.defaultSuccessUrl("/index.jsp"); // PREKO KONTROLERA "/PD/Users/asdf"
+//			login.failureForwardUrl("/pages/failure.jsp");
+		});
+		http.logout(logout -> {
+			logout.invalidateHttpSession(true);
+			logout.logoutSuccessUrl("/login.jsp");
+		});
+		http.exceptionHandling(exception -> {
+			exception.accessDeniedPage("/pages/access_denied.jsp");
+		});
+
 	    http.authorizeRequests().
 		    antMatchers("/index/**").hasAnyRole("Sekretar", "Planinar", "NijeClan").
 		    antMatchers("/admin/**").hasRole("Sekretar").
@@ -47,5 +83,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    rememberMe().
 		    and().
 		    csrf().disable(); //<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	}
+	}*/
 }

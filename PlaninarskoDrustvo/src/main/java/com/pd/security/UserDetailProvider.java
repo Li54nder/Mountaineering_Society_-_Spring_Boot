@@ -1,5 +1,7 @@
 package com.pd.security;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +19,10 @@ public class UserDetailProvider implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Korisnik k = kr.findByKorisnickoIme(username);
+		Optional<Korisnik> k = kr.findByKorisnickoIme(username);
 		
-		UserDetails ud = new CustomUserDetail(k);
-		return ud;
+		k.orElseThrow(() -> new UsernameNotFoundException("Nije pronadjeno korisnicko ime: " + username));
+		
+		return k.map(MyUserDetails::new).get();
 	}
 }

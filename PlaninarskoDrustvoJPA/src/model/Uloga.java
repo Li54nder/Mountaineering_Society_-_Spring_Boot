@@ -18,7 +18,7 @@ public class Uloga implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idUloga;
 
-	private byte[] tip;
+	private String tip;
 
 	//bi-directional many-to-one association to Korisnik
 	@OneToMany(mappedBy="uloga")
@@ -35,11 +35,11 @@ public class Uloga implements Serializable {
 		this.idUloga = idUloga;
 	}
 
-	public byte[] getTip() {
+	public String getTip() {
 		return this.tip;
 	}
 
-	public void setTip(byte[] tip) {
+	public void setTip(String tip) {
 		this.tip = tip;
 	}
 
