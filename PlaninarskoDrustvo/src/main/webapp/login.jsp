@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +21,7 @@
                     <label class="lbl-basic ">Korisnicko ime</label><br>
                     <input type="username" name="username" class="input-f-basic" title="Unesite korisnicko ime" pattern="[A-Za-z\d]+" required> <br><br>
                     <label class="lbl-basic ">Sifra</label><br>
-                    <input type="password" name="password" class="input-f-basic" minlength="6"  title="Unesite Å¡ifru" required> <br><br>
+                    <input type="password" name="password" class="input-f-basic" minlength="5"  title="Unesite Šifru" required> <br><br>
                     <button class="btn-basic-out" type="submit">Prijava</button><br><br>
                     <a href="#" class="txt-color-basic" onclick="registracija()"><small>Nemate nalog? Registruj se!</small></a>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -32,6 +31,7 @@
     </div>
     <script>
         function registracija() {
+        	document.title = "Registracija";
             const form = document.getElementsByTagName('form')[0];
             form.removeAttribute("action");
             form.setAttribute("action", "/PD/registration");
@@ -46,7 +46,7 @@
 
             lbl.outerHTML = '\
             <label class="lbl-basic">Ime i Prezime</label><br>\
-            <input type="text" name="punoime" class="input-f-basic" title="Unesite ime pa prezime odvojeno razmakom" pattern="[A-Za-zÅ Å¡ÄÄÄÄÄÄÅ½Å¾]+[ ][A-Za-zÅ Å¡ÄÄÄÄÄÄÅ½Å¾]+" required> <br><br>' + lbl.outerHTML;
+            <input type="text" name="punoime" class="input-f-basic" title="Unesite ime pa prezime odvojeno razmakom" pattern="[A-Za-zŠšĐđČčĆćŽž]+[ ][A-Za-zŠšĐđČčĆćŽž]+" required> <br><br>' + lbl.outerHTML;
         }
     </script>
 </body>

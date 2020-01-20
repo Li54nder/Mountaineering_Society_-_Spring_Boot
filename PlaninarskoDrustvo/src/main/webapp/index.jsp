@@ -15,10 +15,23 @@
 </head>
 <body>
 
-	<%@include file="./tmp/header.jsp" %>
+    <sec:authorize access="hasAnyRole('Gost', 'Planinar')">
+		<%@include file="./tmp/header.jsp" %>
+    </sec:authorize>
+    <sec:authorize access="hasRole('Sekretar')">
+        <center>
+            <h1 class="txt-color-basic">Dobrodošli ${korisnik.ime} ${korisnik.prezime}</h1>
+        	<br><br>
+        	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+			<form:form action="${pageContext.request.contextPath}/logout" method="POST">
+			    <input type="submit" value="Odjavi se" style="font-family: 'Times New Roman'; border: 0; background-color: transparent; font-size: 16px; cursor: pointer; outline: none;" class="txt-color-basic"/>
+			</form:form>
+        </center>
+        <hr>
+    </sec:authorize>
     
     <div class="logo">
-        <img src="/PD/resources/imgs/logo.png" alt="">
+        <img src="/PD/resources/imgs/logo.png" alt="Planinarsko | Društvo">
     </div>
     
     <hr>
@@ -33,7 +46,7 @@
 	    <div class="sekcija planinar">
 	        <div class="clan">
 	            <center>
-	                <h1 class="txt-color-basic">Dobrodošli $/planinar/</h1>
+	                <h1 class="txt-color-basic">Dobrodošli ${korisnik.ime} ${korisnik.prezime}</h1>
 	            </center>
 	            <div class="table">
 	                <table class="table-basic">
@@ -42,9 +55,29 @@
 	                        <th>Rezervisani domovi</th>
 	                        <th></th>
 	                    </tr>
+	                    <c:forEach var="i" items="${korisnik.rezervises}">
 	                    <tr>
-	                        <td colspan="3">$/dom/</td>
+	                        <td colspan="3">${i.dom.naziv}</td>
 	                    </tr>
+	                    </c:forEach>
+	                </table>
+	            </div>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th></th>
+	                        <th>Znamenitosti za koje ste zakazali posetu</th>
+	                        <th></th>
+	                    </tr>
+	                    <c:forEach var="i" items="${korisnik.rezervises}">
+	                    <c:forEach var="j" items="${i.zakazujes}">
+		                    <tr>
+		                        <td>${j.termin.znamenitost.tip} (${j.termin.znamenitost.opis})</td>
+		                    	<td></td>
+		                    	<td><a href="/PD/user/posecuje?id=${j.termin.znamenitost.idZnamenitost}">Označi kao posećeno</a></td>
+		                    </tr>
+	                    </c:forEach>
+	                    </c:forEach>
 	                </table>
 	            </div>
 	            <div class="table">
@@ -54,16 +87,20 @@
 	                        <th>Znamenitosti koje ste posećivali</th>
 	                        <th></th>
 	                    </tr>
-	                    <tr>
-	                        <td colspan="3">${znamenitost}</td>
-	                    </tr>
+	                    <c:forEach var="i" items="${korisnik.rezervises}">
+	                    <c:forEach var="j" items="${i.obilazis}">
+		                    <tr>
+		                        <td colspan="3">${j.znamenitost.tip} (${j.znamenitost.opis})</td>
+		                    </tr>
+	                    </c:forEach>
+	                    </c:forEach>
 	                </table>
 	            </div>
 	            <div class="table">
 	                <table class="table-basic">
 	                    <tr>
 	                        <th></th>
-	                        <th>IzveÅ¡taji koje ste pisali</th>
+	                        <th>Izveštaji koje ste pisali</th>
 	                        <th></th>
 	                    </tr>
 	                    <tr>
@@ -77,9 +114,6 @@
 
     <sec:authorize access="hasRole('Sekretar')">
 	    <div class="sekretar">
-	        <center>
-	            <h1 class="txt-color-basic">Dobrodošli <sec:authentication property="principal.ime"/> ${korisnik.prezime}</h1>
-	        </center>
 	        <div class="sekcija zahtevi">
 	            <h1 class="txt-color-basic">Zahtevi za ućlanjenje u društvo</h1>
 	            <div class="table">

@@ -14,7 +14,7 @@
     <title>Znamenitosti</title>
 </head>
 <body>
-    <script>getHeader();</script>
+    <%@include file="./tmp/header.jsp" %>
     
     <div class="opis">
         <h1 class="txt-color-basic">Znamenitost: ${taita}</h1>

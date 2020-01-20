@@ -14,7 +14,7 @@
     <title>IzveÅ¡taji</title>
 </head>
 <body>
-    <script>getHeader();</script>
+    <%@include file="./tmp/header.jsp" %>
 
     <div class="sekcija">
         <h1 class="txt-color-basic">IzveÅ¡taji/Slike za planinu...</h1>

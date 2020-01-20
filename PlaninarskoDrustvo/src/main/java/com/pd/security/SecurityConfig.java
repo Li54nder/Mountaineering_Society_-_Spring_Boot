@@ -43,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			    	.loginProcessingUrl("/login")
 			    	.defaultSuccessUrl("/guest")
 			.and()
-//			    .exceptionHandling().accessDeniedPage("/pages/login.jsp?errMsg=loginFailed") //access_denied.jsp
-//			    .and()
+			    .exceptionHandling().accessDeniedPage("/tmp/accessDenied.jsp")
+			.and()
 		    	.rememberMe()
 		    .and()
 		    	.csrf().disable();

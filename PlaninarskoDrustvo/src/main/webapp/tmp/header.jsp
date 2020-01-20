@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <header class="header-basic-out">
     <a href="/PD/guest">Početna</a>
     <a href="/PD/user/getRezervacije">Rezervacije</a>
