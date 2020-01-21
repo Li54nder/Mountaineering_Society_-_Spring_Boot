@@ -25,7 +25,7 @@ public class MyUserDetails implements UserDetails {
 		this.prezime = k.getPrezime();
 
 		String role = k.getUloga() == null? "Gost" : k.getUloga().getTip();
-		System.err.println(ime +" "+ prezime +" ("+ role + ")");
+//		System.err.println(ime +" "+ prezime +" ("+ role + ")");
 		
 		this.authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
 	}

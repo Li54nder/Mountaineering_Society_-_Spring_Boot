@@ -24,13 +24,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pd.repository.ClanarinaRepository;
 import com.pd.repository.KorisnikRepository;
+import com.pd.repository.ObilaziRepository;
 import com.pd.repository.PlaninaRepository;
+import com.pd.repository.RezerviseRepository;
 import com.pd.repository.UlogaRepository;
 import com.pd.repository.ZnamenitostRepository;
 import com.pd.security.GeneratePassword;
 
 import model.Clanarina;
 import model.Korisnik;
+import model.Obilazi;
 import model.Planina;
 import model.Uloga;
 import model.Znamenitost;
@@ -53,17 +56,23 @@ public class UlogeController {
 	ZnamenitostRepository zrepo;
 	@Autowired
 	PlaninaRepository prepo;
+	@Autowired
+	ObilaziRepository orepo;
+	@Autowired
+	RezerviseRepository rrepo;
 	
-	@GetMapping("/")
-	public String home() {
-		return "login";
-	}
+	
+	
+	
+//	GUEST
 	
 	@GetMapping("/guest")
 	public String guest(Principal principal) {
 		String username = principal.getName();
 		Korisnik k = krepo.findByKorisnickoIme(username).get();
 		request.getSession().setAttribute("korisnik", k);
+		
+		//TODO: Proveri da li je korisniku, ako je Clan, istekla clanarina... ako jest izbrisi mi Clanarinu i ULOGU
 		
 		if(k.getUloga().getTip().equals("Sekretar")) {
 			List<Korisnik> korisnici = krepo.findAll();
@@ -74,27 +83,28 @@ public class UlogeController {
 					.filter(tmp -> tmp.getUloga() != null)
 					.filter(tmp -> tmp.getUloga().getTip().equals("Planinar"))
 					.collect(Collectors.toList());
+			List<Planina> planine = prepo.findAll();
 			request.getSession().setAttribute("zahtevi", zahtevi);
 			request.getSession().setAttribute("clanovi", clanovi);
-		} 
-			
-		else if(k.getUloga().getTip().equals("Planinar")) {
-			// TO TEST!!!
-//			List<Optional<Znamenitost>> zakazano = zrepo.getZakazane(k.getIdKorisnik()); 
-//			request.getSession().setAttribute("zakazaneZnamenitosti", zakazano);
+			request.getSession().setAttribute("planine", planine);
 		}
 		
 		return "index";
 	}
 	
+	
+	
+	
+//	USER
+	
 	@GetMapping("/user/getRezervacije")
 	public String getRezervacije() {
-		
 		List<Planina> planine = prepo.findAll();
 		request.getSession().setAttribute("planine", planine);
 		
 		return "reservation";
 	}
+	
 	@GetMapping("user/getReport")
 	public String getReport() {
 		return "report";
@@ -106,10 +116,29 @@ public class UlogeController {
 	}
 	
 	@GetMapping("/user/posecuje")
-	public String posetiZnamenitost(String id) {
-		Integer idInt = Integer.parseInt(id);
+	public String posetiZnamenitost(String idZ, String idK) {
+		Integer idZnamenitost = Integer.parseInt(idZ);
+		Integer idKorisnik = Integer.parseInt(idK);
 		
-		//TODO...
+		Znamenitost z = zrepo.findById(idZnamenitost).get();
+		Korisnik k = krepo.findById(idKorisnik).get();
+		
+		k.getRezervises().forEach(r -> {
+			r.getZakazujes().forEach(zakazuje -> {
+				if(zakazuje.getTermin().getZnamenitost().equals(z)) {
+					zakazuje.getTermin().setZnamenitost(null);
+					Obilazi o = new Obilazi();
+					o.setRezervise(r);
+					o.setZnamenitost(z);
+					orepo.save(o);
+					
+					r.getObilazis().add(o);
+					rrepo.save(r);
+					
+//					return "index"; //ne radi
+				}
+			});
+		});
 		
 		return "redirect:/guest";
 	}
@@ -123,8 +152,7 @@ public class UlogeController {
 		Planina p = prepo.findById(id).get();
 		request.getSession().setAttribute("planina", p);
 		
-		
-		System.err.println(result);
+		//TODO: datum u sesiju... tebace...
 		
 		return "reservation";
 	}
@@ -132,9 +160,10 @@ public class UlogeController {
 	
 	
 	
+//	ADMIN
 	
 	@GetMapping("/admin/uclani")
-	public String admin(String username) {
+	public String uclanjenje(String username) {
 		Korisnik k = krepo.findByKorisnickoIme(username).get();
 		Uloga planiar = urepo.findById(2).get();
 		
@@ -147,6 +176,32 @@ public class UlogeController {
 		krepo.save(k);
 		
 		return "redirect:/guest";
+	}
+	
+	@GetMapping("/admin/produziClanarinu")
+	public String produzenje(String username) {
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		
+		Clanarina cl = k.getClanarina();
+		Date kraj = cl.getKraj();
+		
+		LocalDate localDate = kraj.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		kraj = Date.from(localDate.plusYears(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		
+		cl.setKraj(kraj);
+		crepo.save(cl);
+		
+		return "redirect:/guest";
+	}
+	
+	
+
+	
+//	SVI
+
+	@GetMapping("/")
+	public String home() {
+		return "login";
 	}
 	
 	@PostMapping("/registration")
@@ -165,10 +220,10 @@ public class UlogeController {
 	
 	
 	
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	        dateFormat, false));
-	}
+//	@InitBinder
+//	protected void initBinder(WebDataBinder binder) {
+//	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//	binder.registerCustomEditor(Date.class, new CustomDateEditor(
+//	        dateFormat, false));
+//	}
 }

@@ -49,45 +49,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    .and()
 		    	.csrf().disable();
 	}
-	
-	/*
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/").permitAll();
-			authorize.antMatchers("/index/**").hasAnyRole("Sekretar", "Planinar", "NijeClan");
-			authorize.antMatchers("/admin/**").hasRole("Sekretar");
-			authorize.antMatchers("/planinar/**").hasRole("Planinar");
-		});
-		http.formLogin(login -> {
-			login.loginPage("/login.jsp"); // /PD
-			login.loginProcessingUrl("/login");
-			login.defaultSuccessUrl("/index.jsp"); // PREKO KONTROLERA "/PD/Users/asdf"
-//			login.failureForwardUrl("/pages/failure.jsp");
-		});
-		http.logout(logout -> {
-			logout.invalidateHttpSession(true);
-			logout.logoutSuccessUrl("/login.jsp");
-		});
-		http.exceptionHandling(exception -> {
-			exception.accessDeniedPage("/pages/access_denied.jsp");
-		});
-
-	    http.authorizeRequests().
-		    antMatchers("/index/**").hasAnyRole("Sekretar", "Planinar", "NijeClan").
-		    antMatchers("/admin/**").hasRole("Sekretar").
-		    antMatchers("/planinar/**").hasRole("Planinar").
-//		    antMatchers("/").permitAll().
-		    and().
-		    formLogin().
-		    loginPage("/login.jsp").
-		    loginProcessingUrl("/login").
-		    defaultSuccessUrl("/index.jsp").
-		    and().
-//		    exceptionHandling().accessDeniedPage("/pages/login.jsp?errMsg=loginFailed"). //access_denied.jsp
-//		    and().
-		    rememberMe().
-		    and().
-		    csrf().disable(); //<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	}*/
 }

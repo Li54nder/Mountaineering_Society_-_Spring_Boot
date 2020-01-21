@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,9 +73,9 @@
 	                    <c:forEach var="i" items="${korisnik.rezervises}">
 	                    <c:forEach var="j" items="${i.zakazujes}">
 		                    <tr>
-		                        <td>${j.termin.znamenitost.tip} (${j.termin.znamenitost.opis})</td>
-		                    	<td></td>
-		                    	<td><a href="/PD/user/posecuje?id=${j.termin.znamenitost.idZnamenitost}">Označi kao posećeno</a></td>
+		                        <td>${j.termin.znamenitost.tip}</td>
+		                    	<td>(${j.termin.znamenitost.opis})</td>
+		                    	<td><a href="/PD/user/posecuje?idZ=${j.termin.znamenitost.idZnamenitost}&idK=${korisnik.idKorisnik}">Označi kao posećeno</a></td>
 		                    </tr>
 	                    </c:forEach>
 	                    </c:forEach>
@@ -103,9 +104,15 @@
 	                        <th>Izveštaji koje ste pisali</th>
 	                        <th></th>
 	                    </tr>
+	                    <c:forEach var="i" items="${korisnik.rezervises}">
+	                    <c:forEach var="j" items="${i.izvestajs}">
 	                    <tr>
-	                        <td colspan="3">$/izvestajKojiNijeSlika/</td>
+	                    	<core:if test="${j.sadrzaj != null}">
+	                        	<td colspan="3">${j.sadrzaj}</td>
+	                    	</core:if>
 	                    </tr>
+	                    </c:forEach>
+	                    </c:forEach>
 	                </table>
 	            </div>
 	        </div>
@@ -150,7 +157,7 @@
 	                        <td>${i.prezime}</td>
 	                        <td>${i.clanarina.pocetak}</td>
 	                        <td>${i.clanarina.kraj}</td>
-	                        <td>Produži</td>
+	                        <td><a href="/PD/admin/produziClanarinu?username=${i.korisnickoIme}">Produži</a></td>
 	                    </tr>
 	                    </c:forEach>
 	                </table>
@@ -163,13 +170,21 @@
 	                    <tr>
 	                        <th>Planina</th>
 	                        <th></th>
-	                        <th>Broj noćenja</th>
+	                        <th>Broj rezervacija</th>
 	                    </tr>
-	                    <tr>
-	                        <td>${planina}</td>
-	                        <td>:</td>
-	                        <td>${broj}</td>
-	                    </tr>
+	                    <c:forEach var="p" items="${planine}">
+	                    <%! int br = 0; %>
+	                    <c:forEach var="d" items="${j.doms}">
+	                    <c:forEach var="r" items="${d.rezervises}">
+	                    	<% br++; %>
+	                    </c:forEach>
+	                    </c:forEach>
+		                    <tr>
+		                        <td>${p.naziv}</td>
+		                        <td>:</td>
+		                        <td><% out.println(br); %></td>
+		                    </tr>
+	                    </c:forEach>
 	                </table>
 	            </div>
 	        </div>

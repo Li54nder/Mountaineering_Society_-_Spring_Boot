@@ -19,11 +19,6 @@ import model.Staza;
 @RequestMapping("/myImage")
 public class ImageController {
 
-//	@Resource(name="categoryService")
-//	private CategoryService categoryService;
-	
-//	@Resource(name="itemService")
-//	private ItemService itemService;
 	@Autowired
 	StazaRepository srepo;
 	
