@@ -1,7 +1,12 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy.");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +63,11 @@
 	                    </tr>
 	                    <c:forEach var="i" items="${korisnik.rezervises}">
 	                    <tr>
-	                        <td colspan="3">${i.dom.naziv}</td>
+	                        <td style="width: 33%">${i.dom.naziv}</td>
+	                        <c:set var="pocetak" value="${i.pocetak}" />
+	                        <td style="width: 34%">OD: <%= formater.format(pageContext.getAttribute("pocetak")) %></td>
+	                        <c:set var="kraj" value="${i.kraj}" />
+	                        <td style="width: 33%">OD: <%= formater.format(pageContext.getAttribute("kraj")) %></td>
 	                    </tr>
 	                    </c:forEach>
 	                </table>

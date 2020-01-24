@@ -22,7 +22,7 @@ public class Znamenitost implements Serializable {
 
 	private String tip;
 
-	private byte zakazujeSe;
+	private boolean zakazujeSe;
 
 	//bi-directional many-to-one association to Komentarise
 	@OneToMany(mappedBy="znamenitost")
@@ -72,11 +72,11 @@ public class Znamenitost implements Serializable {
 		this.tip = tip;
 	}
 
-	public byte getZakazujeSe() {
+	public boolean getZakazujeSe() {
 		return this.zakazujeSe;
 	}
 
-	public void setZakazujeSe(byte zakazujeSe) {
+	public void setZakazujeSe(boolean zakazujeSe) {
 		this.zakazujeSe = zakazujeSe;
 	}
 

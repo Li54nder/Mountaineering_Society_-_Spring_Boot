@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pd.repository.ClanarinaRepository;
+import com.pd.repository.DomRepository;
+import com.pd.repository.KomentariseRepository;
 import com.pd.repository.KorisnikRepository;
 import com.pd.repository.ObilaziRepository;
 import com.pd.repository.PlaninaRepository;
@@ -32,9 +32,12 @@ import com.pd.repository.ZnamenitostRepository;
 import com.pd.security.GeneratePassword;
 
 import model.Clanarina;
+import model.Dom;
+import model.Komentarise;
 import model.Korisnik;
 import model.Obilazi;
 import model.Planina;
+import model.Rezervise;
 import model.Uloga;
 import model.Znamenitost;
 
@@ -60,6 +63,10 @@ public class UlogeController {
 	ObilaziRepository orepo;
 	@Autowired
 	RezerviseRepository rrepo;
+	@Autowired
+	DomRepository drepo;
+	@Autowired
+	KomentariseRepository komrepo;
 	
 	
 	
@@ -111,11 +118,19 @@ public class UlogeController {
 	}
 	
 	@GetMapping("/user/getSights")
-	public String getSights() {
+	public String getSights(String idZ, String username) {
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		Znamenitost z = zrepo.findById(Integer.parseInt(idZ)).get();
+		
+		//TODO: Da li korisnika slati u sesiju opet???
+		
+		request.getSession().setAttribute("znamenitost", z);		
+		
 		return "sights";
 	}
-	
+//	@GetMapping("/user/posetiZnamenitost") Treba da se prosledjuje USERNAME (javlja sa u indexu i u znamenitosti...)
 	@GetMapping("/user/posecuje")
+	//JEDNOSTAVNO NE SACUVA NISTA...
 	public String posetiZnamenitost(String idZ, String idK) {
 		Integer idZnamenitost = Integer.parseInt(idZ);
 		Integer idKorisnik = Integer.parseInt(idK);
@@ -123,22 +138,40 @@ public class UlogeController {
 		Znamenitost z = zrepo.findById(idZnamenitost).get();
 		Korisnik k = krepo.findById(idKorisnik).get();
 		
-		k.getRezervises().forEach(r -> {
-			r.getZakazujes().forEach(zakazuje -> {
-				if(zakazuje.getTermin().getZnamenitost().equals(z)) {
-					zakazuje.getTermin().setZnamenitost(null);
-					Obilazi o = new Obilazi();
-					o.setRezervise(r);
-					o.setZnamenitost(z);
-					orepo.save(o);
-					
-					r.getObilazis().add(o);
-					rrepo.save(r);
-					
-//					return "index"; //ne radi
-				}
+		
+		
+		if(z.getZakazujeSe()) {
+//			PROVERI...
+			k.getRezervises().forEach(r -> {
+				r.getZakazujes().forEach(zakazuje -> {
+					if(zakazuje.getTermin().getZnamenitost().equals(z)) {
+						zakazuje.getTermin().setZnamenitost(null);
+						Obilazi o = new Obilazi();
+						o.setRezervise(r);
+						o.setZnamenitost(z);
+						orepo.save(o);
+						
+						r.getObilazis().add(o);
+						rrepo.save(r);
+						
+//						return "index"; //ne radi
+					}
+				});
 			});
-		});
+		} else {
+			Obilazi o = new Obilazi();
+			z.getStaza().getPlanina().getDoms().forEach(d -> {
+				d.getRezervises().forEach(r -> {
+					if(r.getKorisnik().equals(k)) {
+						o.setRezervise(r);
+						r.getObilazis().add(o);
+						rrepo.save(r);
+					}
+				});
+			});
+			o.setZnamenitost(z);
+			orepo.save(o);
+		}
 		
 		return "redirect:/guest";
 	}
@@ -152,9 +185,54 @@ public class UlogeController {
 		Planina p = prepo.findById(id).get();
 		request.getSession().setAttribute("planina", p);
 		
-		//TODO: datum u sesiju... tebace...
+		request.getSession().setAttribute("datumRezervacije", result);
+		//TODO: Dobaviti informaciju koliko korisnik ostaje...
 		
 		return "reservation";
+	}
+	
+	@GetMapping("/user/rezervisiDom")
+	public String rezervisiDom(String idD, String username) {
+		//TODO: Dobaviti broj dana koliko ostaje...
+		int brojDana = 7;
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		Dom d = drepo.findById(Integer.parseInt(idD)).get();
+		
+		Date pocetak = (Date) request.getSession().getAttribute("datumRezervacije");
+		LocalDate localDate = pocetak.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		Date kraj = Date.from(localDate.plusDays(brojDana).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		
+		Rezervise r = new Rezervise();
+		r.setKorisnik(k);
+		r.setDom(d);
+		r.setPocetak(pocetak);
+		r.setKraj(kraj);
+		rrepo.save(r);
+		
+		//TODO: U domu voditi racuna o brojnom stanu....
+		
+		return "reservation";
+	}
+	
+	@PostMapping("/user/ostaviKomentar")
+	public String ostaviKomentar(String komentar, String idZ, String username) {
+		Znamenitost z = zrepo.findById(Integer.parseInt(idZ)).get();
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		
+		List<Optional<Obilazi>> listaObilazi = orepo.findByZnamenitost(z);
+		List<Obilazi> tmp = k.getRezervises().stream().map(r -> r.getObilazis()).flatMap(List::stream).collect(Collectors.toList());
+		
+		listaObilazi.stream().filter(o -> tmp.stream().anyMatch(x -> x.equals(o.get())));
+		
+		if(listaObilazi.size() > 0) {
+			Komentarise kom = new Komentarise();
+			kom.setRezervise(listaObilazi.get(0).get().getRezervise());
+			kom.setZnamenitost(z);
+			kom.setKomentar(komentar);
+			komrepo.save(kom);
+		}
+		
+		return "redirect:/user/getSights";
 	}
 	
 	

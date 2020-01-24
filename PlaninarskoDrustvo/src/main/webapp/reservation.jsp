@@ -54,7 +54,7 @@
 	                    <h2>${i.naziv}</h2>
 	                    <div>
 	                        <span>Kapacitet doma: ${i.kapacitet}</span><br><br>
-	                        <a href="/PD/user/rezervisiDom?id=${i.idDom}" class="txt-color-basic">Rezerviši</a>
+	                        <a href="/PD/user/rezervisiDom?idD=${i.idDom}&username=${korisnik.korisnickoIme}" class="txt-color-basic">Rezerviši</a>
 	                    </div>
 	                </center>
 	            </div>
@@ -71,7 +71,7 @@
 	                        <p>${i.opis}</p>
 	                        <h3>Znamenitosti:</h3>
 	                        <c:forEach var="j" items="${i.znamenitosts}">
-	                        	<a href="/PD/user/getSights?id=${j.idZnamenitost}" class="txt-color-basic">${j.tip}</a><br>
+	                        	<a href="/PD/user/getSights?idZ=${j.idZnamenitost}&username=${korisnik.korisnickoIme}" class="txt-color-basic">${j.tip}</a><br>
 	        				</c:forEach>
 	                    </div>
 	                </center>
