@@ -31,6 +31,7 @@
             </div>
             <br><br>
             <button type="submit" class="btn-basic-out">Pretraži</button>
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
     </div>
     
@@ -56,7 +57,8 @@
 	            <input type="hidden" name="idP" value="${trazenaPlanina.idPlanina}">
 	            <textarea name="izvestaj" id="" cols="25" rows="10" class="input-f-basic" placeholder="Sadržaj..."></textarea> <br><br>
 	            <input class="btn-basic-out" type="submit" value="Postavi">
-	        </form>
+	        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
 	        
 	        <form class="ostaviSliku center" action="/PD/user/postaviSliku" method="post" enctype="multipart/form-data">
 	            <input type="hidden" name="username" value="${korisnik.korisnickoIme}">
@@ -69,7 +71,8 @@
 	            <label class="lbl-basic selektovanaSlika">Slika: ${naziv}</label>
 	            <br>
 	            <input class="btn-basic-out" type="submit" value="Postavi" id="postaviSliku">
-	        </form>
+	        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
 	
 			<br><br>
 	        <h1 class="txt-color-basic">Galerija izveštaja i slika za planinu ${trazenaPlanina.naziv}</h1>

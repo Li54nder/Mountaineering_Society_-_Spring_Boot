@@ -1,6 +1,8 @@
 package com.pd.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,8 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +53,13 @@ import model.Termin;
 import model.Uloga;
 import model.Zakazuje;
 import model.Znamenitost;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 
 //@RestController
@@ -60,6 +69,8 @@ public class UlogeController {
 	
 	@Autowired
 	HttpServletRequest request;
+	@Autowired
+	HttpServletResponse response;
 	@Autowired
 	KorisnikRepository krepo;
 	@Autowired
@@ -98,7 +109,14 @@ public class UlogeController {
 		Korisnik k = krepo.findByKorisnickoIme(username).get();
 		request.getSession().setAttribute("korisnik", k);
 		
-		//TODO: Proveri da li je korisniku, ako je Clan, istekla clanarina... ako jest izbrisi mi Clanarinu i ULOGU
+		if(k.getClanarina()!= null && k.getClanarina().getKraj().before(new Date())) {
+			System.err.println("Korisniku "+k.getIme() + " je oduzeta clanarina i uloga koju je do sad imao...");
+			crepo.delete(k.getClanarina());
+			k.setClanarina(null);
+			k.setUloga(null);
+			krepo.save(k);
+			return "redirect:/logout";
+		}
 		
 		if(k.getUloga() != null && k.getUloga().getTip().equals("Sekretar")) {
 			List<Korisnik> korisnici = krepo.findAll();
@@ -207,10 +225,8 @@ public class UlogeController {
 	
 	@GetMapping("/user/getSights")
 	public String getSights(String idZ, String username) {
-		Korisnik k = krepo.findByKorisnickoIme(username).get();
+//		Korisnik k = krepo.findByKorisnickoIme(username).get();
 		Znamenitost z = zrepo.findById(Integer.parseInt(idZ)).get();
-		
-		//TODO: Da li korisnika slati u sesiju opet???
 		
 		request.getSession().setAttribute("znamenitost", z);		
 		
@@ -275,14 +291,12 @@ public class UlogeController {
 	
 //  Treba da se prosledjuje USERNAME (javlja sa u indexu i u znamenitosti...)
 	@GetMapping("/user/posecuje")
-	public String posetiZnamenitost(String idZ, String idK) throws Exception {
+	public String posetiZnamenitost(String idZ, String username) throws Exception {
 		Integer idZnamenitost = Integer.parseInt(idZ);
-		Integer idKorisnik = Integer.parseInt(idK);
 		
 		Znamenitost z = zrepo.findById(idZnamenitost).get();
-		Korisnik k = krepo.findById(idKorisnik).get();
-		boolean ok = true;
-
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		
 		Obilazi o = new Obilazi();
 		for (Dom d : z.getStaza().getPlanina().getDoms()) {
 			for (Rezervise r : d.getRezervises()) {
@@ -329,7 +343,7 @@ public class UlogeController {
 			komrepo.save(kom);
 		}
 		
-		return "redirect:/user/getSights";
+		return "redirect:/user/getSights?idZ="+idZ+"&username="+username;
 	}
 	
 	
@@ -370,9 +384,30 @@ public class UlogeController {
 	}
 	
 	@GetMapping("/admin/generisiIzvestaj")
-	public String generisiIzvestaj(String idZ) {
-//		TODO:...
-		return "redirect:/guest";
+	public void generisiIzvestaj(String idZ) throws JRException, IOException {
+//		Sta tacno treba da bude u izvestaju...
+		Integer id = Integer.parseInt(idZ);
+		Znamenitost znam = zrepo.findById(id).get();
+		
+		List<Termin> termini = znam.getTermins();
+		
+		response.setContentType("application/pdf");
+		JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(termini); // < =====================
+		
+		InputStream in = this.getClass().getResourceAsStream("/jasperreports/izvestaj.jrxml"); //TU SMESTITI IZVESTAJ
+		JasperReport report = JasperCompileManager.compileReport(in);
+		
+//		Map<String, Object> param = new HashMap<String, Object>();
+//		param.put("", null);
+		
+		JasperPrint print = JasperFillManager.fillReport(report, null, source);
+		in.close();
+		
+		response.setContentType("application/x-download");
+		response.setHeader("Content-disposition", "attachment; filename=izvestaj.pdf");
+		
+		OutputStream out = response.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(print, out);
 	}
 	
 	

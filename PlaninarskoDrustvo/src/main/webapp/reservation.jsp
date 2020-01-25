@@ -39,6 +39,7 @@
             <button class="btn-basic-out" type="submit">Pretraži</button>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </div>
+    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 
 	<core:if test="${planina != null}">

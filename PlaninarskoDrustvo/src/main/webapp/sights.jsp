@@ -50,6 +50,7 @@
 	            <input type="hidden" name="username" value="${korisnik.korisnickoIme}">
 	            <button class="btn-basic-out" type="submit">Zakazi termin</button> 
 	        </center>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </div>
     </div>
@@ -57,7 +58,7 @@
     <c:if test="${!znamenitost.zakazujeSe}">
     <div class="sekcija">  
     	<h2 class="txt-color-basic"><i>Označi kao posećeno:</i></h2> 
-    	<a href="/PD/user/posecuje?idZ=${znamenitost.idZnamenitost}&idK=${korisnik.idKorisnik}"><button class="btn-basic-out">Označi</button></a>
+    	<a href="/PD/user/posecuje?idZ=${znamenitost.idZnamenitost}&username=${korisnik.korisnickoIme}"><button class="btn-basic-out">Označi</button></a>
     </div>
     </c:if>
     
@@ -73,6 +74,7 @@
 		            <textarea name="komentar" id="" cols="25" rows="10" class="input-f-basic" placeholder="Sadržaj komentara..."></textarea> <br><br>
 		            <button type="submit" class="btn-basic-out">Komentariši</button> 
 		        </center>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </div>
         

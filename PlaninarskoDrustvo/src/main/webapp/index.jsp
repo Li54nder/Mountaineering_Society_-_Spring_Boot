@@ -33,7 +33,8 @@
         	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 			<form:form action="${pageContext.request.contextPath}/logout" method="POST">
 			    <input type="submit" value="Odjavi se" style="font-family: 'Times New Roman'; border: 0; background-color: transparent; font-size: 16px; cursor: pointer; outline: none;" class="txt-color-basic"/>
-			</form:form>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form:form>
         </center>
         <hr>
     </sec:authorize>
@@ -87,7 +88,7 @@
 		                    	<td></td>
 		                        <td>${j.termin.znamenitost.tip}</td>
 		                    	<td>${j.termin.znamenitost.opis} (${j.termin.pocetak} - ${j.termin.kraj})</td>
-		                    	<td><a href="/PD/user/posecuje?idZ=${j.termin.znamenitost.idZnamenitost}&idK=${korisnik.idKorisnik}">Označi kao posećeno</a></td>
+		                    	<td><a href="/PD/user/posecuje?idZ=${j.termin.znamenitost.idZnamenitost}&username=${korisnik.korisnickoIme}">Označi kao posećeno</a></td>
 		                    	<td></td>
 		                    </tr>
 	                    </c:forEach>
