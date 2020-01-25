@@ -30,27 +30,32 @@
     </div>
     
     
-    <c:if test="${znamenitost.zakazujeSe == true}">
+    <c:if test="${znamenitost.zakazujeSe}">
     <hr>
     <div class="sekcija">
         <h1 class="txt-color-basic">Za ovu znamenitost neophodno je rezervisati termin posete</h1>
         <div class="center">
-            <label class="lbl-basic">Odaberi termin posete</label>
-            <div class="select-basic" style="width: 250px;">
-                <select>
-                    <option value="0">Odaberi...</option>
-                    <c:forEach var="i" items="termins">
-                    	<option value="${i.pocetak}-${i.kraj}">${i.pocetak} - ${i.kraj}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <br><br>
-            <button class="btn-basic-out">Zakazi termin</button> 		<!-- KONTROLER ZA ZAKAZIVANJE TERMINA -->
+        	<form action="/PD/user/zakaziTermin" method="post">
+        	<center>
+	            <label class="lbl-basic">Odaberi termin posete</label>
+	            <div class="select-basic" style="width: 250px;">
+	                <select name="idTermin">
+	                    <option value="0">Odaberi...</option>
+	                    <c:forEach var="i" items="${znamenitost.termins}">
+	                    	<option value="${i.idTermin}">${i.pocetak} - ${i.kraj}</option>
+	                    </c:forEach>
+	                </select>
+	            </div>
+	            <br><br>
+	            <input type="hidden" name="username" value="${korisnik.korisnickoIme}">
+	            <button class="btn-basic-out" type="submit">Zakazi termin</button> 
+	        </center>
+            </form>
         </div>
     </div>
     </c:if>
-    <c:if test="${znamenitost.zakazujeSe != true}">
-    <div class="sekcija">  												<!-- KONTROLER ZA POSETU ZNAMENITOSTI -->
+    <c:if test="${!znamenitost.zakazujeSe}">
+    <div class="sekcija">  
     	<h2 class="txt-color-basic"><i>Označi kao posećeno:</i></h2> 
     	<a href="/PD/user/posecuje?idZ=${znamenitost.idZnamenitost}&idK=${korisnik.idKorisnik}"><button class="btn-basic-out">Označi</button></a>
     </div>
@@ -62,10 +67,12 @@
         <div class="center">
             <label class="lbl-basic">Ostavi svoj komentar</label>
             <form action="/PD/user/ostaviKomentar" method="post">
-            	<input type="hidden" name="idZ" value="${znamenitost.idZnamenitost}">
-            	<input type="hidden" name="username" value="${korisnik.korisnickoIme}">
-	            <textarea name="komentar" id="" cols="25" rows="10" class="input-f-basic" placeholder="Sadržaj komentara..."></textarea> <br><br>
-	            <button type="submit" class="btn-basic-out">Komentariši</button> 
+            	<center>
+	            	<input type="hidden" name="idZ" value="${znamenitost.idZnamenitost}">
+	            	<input type="hidden" name="username" value="${korisnik.korisnickoIme}">
+		            <textarea name="komentar" id="" cols="25" rows="10" class="input-f-basic" placeholder="Sadržaj komentara..."></textarea> <br><br>
+		            <button type="submit" class="btn-basic-out">Komentariši</button> 
+		        </center>
             </form>
         </div>
         

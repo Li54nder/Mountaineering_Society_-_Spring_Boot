@@ -27,7 +27,9 @@ import com.pd.repository.KorisnikRepository;
 import com.pd.repository.ObilaziRepository;
 import com.pd.repository.PlaninaRepository;
 import com.pd.repository.RezerviseRepository;
+import com.pd.repository.TerminRepository;
 import com.pd.repository.UlogaRepository;
+import com.pd.repository.ZakazujeRepository;
 import com.pd.repository.ZnamenitostRepository;
 import com.pd.security.GeneratePassword;
 
@@ -38,7 +40,9 @@ import model.Korisnik;
 import model.Obilazi;
 import model.Planina;
 import model.Rezervise;
+import model.Termin;
 import model.Uloga;
+import model.Zakazuje;
 import model.Znamenitost;
 
 
@@ -67,11 +71,15 @@ public class UlogeController {
 	DomRepository drepo;
 	@Autowired
 	KomentariseRepository komrepo;
+	@Autowired
+	TerminRepository trepo;
+	@Autowired
+	ZakazujeRepository zakrepo;
 	
 	
 	
 	
-//	GUEST
+//	GUEST ==========================================================================================================
 	
 	@GetMapping("/guest")
 	public String guest(Principal principal) {
@@ -102,7 +110,7 @@ public class UlogeController {
 	
 	
 	
-//	USER
+//	USER ===========================================================================================================
 	
 	@GetMapping("/user/getRezervacije")
 	public String getRezervacije() {
@@ -127,53 +135,6 @@ public class UlogeController {
 		request.getSession().setAttribute("znamenitost", z);		
 		
 		return "sights";
-	}
-//	@GetMapping("/user/posetiZnamenitost") Treba da se prosledjuje USERNAME (javlja sa u indexu i u znamenitosti...)
-	@GetMapping("/user/posecuje")
-	//JEDNOSTAVNO NE SACUVA NISTA...
-	public String posetiZnamenitost(String idZ, String idK) {
-		Integer idZnamenitost = Integer.parseInt(idZ);
-		Integer idKorisnik = Integer.parseInt(idK);
-		
-		Znamenitost z = zrepo.findById(idZnamenitost).get();
-		Korisnik k = krepo.findById(idKorisnik).get();
-		
-		
-		
-		if(z.getZakazujeSe()) {
-//			PROVERI...
-			k.getRezervises().forEach(r -> {
-				r.getZakazujes().forEach(zakazuje -> {
-					if(zakazuje.getTermin().getZnamenitost().equals(z)) {
-						zakazuje.getTermin().setZnamenitost(null);
-						Obilazi o = new Obilazi();
-						o.setRezervise(r);
-						o.setZnamenitost(z);
-						orepo.save(o);
-						
-						r.getObilazis().add(o);
-						rrepo.save(r);
-						
-//						return "index"; //ne radi
-					}
-				});
-			});
-		} else {
-			Obilazi o = new Obilazi();
-			z.getStaza().getPlanina().getDoms().forEach(d -> {
-				d.getRezervises().forEach(r -> {
-					if(r.getKorisnik().equals(k)) {
-						o.setRezervise(r);
-						r.getObilazis().add(o);
-						rrepo.save(r);
-					}
-				});
-			});
-			o.setZnamenitost(z);
-			orepo.save(o);
-		}
-		
-		return "redirect:/guest";
 	}
 	
 	@GetMapping("/user/pretragaPlanana")
@@ -214,6 +175,58 @@ public class UlogeController {
 		return "reservation";
 	}
 	
+	@PostMapping("/user/zakaziTermin")
+	public String zakaziTermin(String idTermin, String username) {
+		Korisnik k = krepo.findByKorisnickoIme(username).get();
+		Termin t = trepo.findById(Integer.parseInt(idTermin)).get();
+		
+		t.getZnamenitost().getStaza().getPlanina().getDoms().forEach(d -> {
+			d.getRezervises().forEach(r -> {
+				if(r.getKorisnik().equals(k)) {
+					Zakazuje z = new Zakazuje();
+					z.setRezervise(r);
+					z.setTermin(t);
+					zakrepo.save(z);
+				}
+			});
+		});
+		
+		return "redirect:/guest";
+	}
+	
+//  Treba da se prosledjuje USERNAME (javlja sa u indexu i u znamenitosti...)
+	@GetMapping("/user/posecuje")
+	public String posetiZnamenitost(String idZ, String idK) {
+		Integer idZnamenitost = Integer.parseInt(idZ);
+		Integer idKorisnik = Integer.parseInt(idK);
+		
+		Znamenitost z = zrepo.findById(idZnamenitost).get();
+		Korisnik k = krepo.findById(idKorisnik).get();
+
+		Obilazi o = new Obilazi();
+		z.getStaza().getPlanina().getDoms().forEach(d -> {
+			d.getRezervises().forEach(r -> {
+				if(r.getKorisnik().equals(k)) {
+					o.setRezervise(r);
+					r.getObilazis().add(o);
+					rrepo.save(r);
+					if(z.getZakazujeSe()) {
+						z.getTermins().forEach(t -> {
+							t.getZakazujes().forEach(zak -> {
+								if(zak.getRezervise().equals(r)) {
+									zakrepo.delete(zak);
+								}
+							});
+						});
+					}
+				}
+			});
+		});
+		o.setZnamenitost(z);
+		orepo.save(o);
+		return "redirect:/guest";
+	}
+
 	@PostMapping("/user/ostaviKomentar")
 	public String ostaviKomentar(String komentar, String idZ, String username) {
 		Znamenitost z = zrepo.findById(Integer.parseInt(idZ)).get();
@@ -238,7 +251,7 @@ public class UlogeController {
 	
 	
 	
-//	ADMIN
+//	ADMIN ===========================================================================================================
 	
 	@GetMapping("/admin/uclani")
 	public String uclanjenje(String username) {
@@ -275,7 +288,7 @@ public class UlogeController {
 	
 
 	
-//	SVI
+//	SVI  ===========================================================================================================
 
 	@GetMapping("/")
 	public String home() {
@@ -295,13 +308,4 @@ public class UlogeController {
 		
 		return "redirect:/guest";
 	}
-	
-	
-	
-//	@InitBinder
-//	protected void initBinder(WebDataBinder binder) {
-//	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//	binder.registerCustomEditor(Date.class, new CustomDateEditor(
-//	        dateFormat, false));
-//	}
 }

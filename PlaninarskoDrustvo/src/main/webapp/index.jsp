@@ -63,7 +63,7 @@
 	                    </tr>
 	                    <c:forEach var="i" items="${korisnik.rezervises}">
 	                    <tr>
-	                        <td style="width: 33%">${i.dom.naziv}</td>
+	                        <td style="width: 33%">${i.dom.naziv} (${i.dom.planina.naziv})</td>
 	                        <c:set var="pocetak" value="${i.pocetak}" />
 	                        <td style="width: 34%">OD: <%= formater.format(pageContext.getAttribute("pocetak")) %></td>
 	                        <c:set var="kraj" value="${i.kraj}" />
@@ -76,15 +76,17 @@
 	                <table class="table-basic">
 	                    <tr>
 	                        <th></th>
-	                        <th>Znamenitosti za koje ste zakazali posetu</th>
+	                        <th colspan="3">Znamenitosti za koje ste zakazali posetu</th>
 	                        <th></th>
 	                    </tr>
 	                    <c:forEach var="i" items="${korisnik.rezervises}">
 	                    <c:forEach var="j" items="${i.zakazujes}">
 		                    <tr>
+		                    	<td></td>
 		                        <td>${j.termin.znamenitost.tip}</td>
-		                    	<td>(${j.termin.znamenitost.opis})</td>
+		                    	<td>${j.termin.znamenitost.opis} (${j.termin.pocetak} - ${j.termin.kraj})</td>
 		                    	<td><a href="/PD/user/posecuje?idZ=${j.termin.znamenitost.idZnamenitost}&idK=${korisnik.idKorisnik}">Označi kao posećeno</a></td>
+		                    	<td></td>
 		                    </tr>
 	                    </c:forEach>
 	                    </c:forEach>
@@ -131,7 +133,7 @@
     <sec:authorize access="hasRole('Sekretar')">
 	    <div class="sekretar">
 	        <div class="sekcija zahtevi">
-	            <h1 class="txt-color-basic">Zahtevi za ućlanjenje u društvo</h1>
+	            <h1 class="txt-color-basic">Zahtevi za učlanjenje u društvo</h1>
 	            <div class="table">
 	                <table class="table-basic">
 	                    <tr>
@@ -181,9 +183,10 @@
 	                        <th></th>
 	                        <th>Broj rezervacija</th>
 	                    </tr>
+	                    <%! int br; %>
 	                    <c:forEach var="p" items="${planine}">
-	                    <%! int br = 0; %>
-	                    <c:forEach var="d" items="${j.doms}">
+	                    <% br = 0; %>
+	                    <c:forEach var="d" items="${p.doms}">
 	                    <c:forEach var="r" items="${d.rezervises}">
 	                    	<% br++; %>
 	                    </c:forEach>
