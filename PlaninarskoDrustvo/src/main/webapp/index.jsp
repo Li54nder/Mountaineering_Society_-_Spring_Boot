@@ -1,3 +1,5 @@
+<%@page import="java.util.concurrent.TimeUnit"%>
+<%@page import="model.Rezervise"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -180,25 +182,49 @@
 	                <table class="table-basic">
 	                    <tr>
 	                        <th>Planina</th>
-	                        <th></th>
-	                        <th>Broj rezervacija</th>
+	                        <th>Broj poseta</th>
+	                        <th>Broj nocenja</th>
 	                    </tr>
-	                    <%! int br; %>
+	                    <%! int br; long brNocenja;%>
 	                    <c:forEach var="p" items="${planine}">
-	                    <% br = 0; %>
+	                    <% br = 0; brNocenja = 0;%>
 	                    <c:forEach var="d" items="${p.doms}">
 	                    <c:forEach var="r" items="${d.rezervises}">
+	                    	<% 
+	                    	Rezervise rez = (Rezervise) pageContext.getAttribute("r");
+	                    	long diff = rez.getKraj().getTime() - rez.getPocetak().getTime();
+	                    	brNocenja += TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	                    	%>
 	                    	<% br++; %>
 	                    </c:forEach>
 	                    </c:forEach>
 		                    <tr>
 		                        <td>${p.naziv}</td>
-		                        <td>:</td>
 		                        <td><% out.println(br); %></td>
+		                        <td><% out.println(brNocenja); %></td>
 		                    </tr>
 	                    </c:forEach>
 	                </table>
 	            </div>
+	        </div>
+	        <div class="sekcija">
+	            <h1 class="txt-color-basic">Preuzimanje spiskova rezervisanih termina za znamenitosti</h1>
+	            <div class="table">
+	                <table class="table-basic">
+	                    <tr>
+	                        <th>Znamenitost koje se rezervišu</th>
+	                        <th></th>
+	                        <th>Generiši izveštaj</th>
+	                    </tr>
+	                    <c:forEach var="z" items="${sveZnamenitosti}">
+		                    <tr>
+		                    	<td>${z.tip} (${z.staza.planina.naziv})</td>
+		                    	<td>:</td>
+		                    	<td><a href="/PD/admin/generisiIzvestaj?idZ=${z.idZnamenitost}">Generiši</a></td>
+		                    </tr>
+	                    </c:forEach>
+	               	</table>
+	           	</div>
 	        </div>
 	    </div>
 	</sec:authorize>

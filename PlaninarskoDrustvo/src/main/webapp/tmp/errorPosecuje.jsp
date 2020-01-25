@@ -15,14 +15,9 @@
         <div class="card-basic">
             <center>
                 <img src="/PD/resources/imgs/logo.png" alt="Planinarsko | Društvo" style="height:auto; width:200px; border-radius:10px;">
-                <h2>NEŠTO JE POŠLO NAOPAKO</h2>
+                <h2>Greška</h2>
                 <div>
-                    <p>Izvinite, ali nešto je pošlo naopako. Moguće je da:</p>
-                   	<ul style="text-align: left !important;">
-                   		<li>Pristupate stranici kojoj nemate dozvolu pristupanja</li>
-                   		<li>Pozivate akciju za koju nemate dozvolu za izvršenje</li>
-                   		<li>Nešto na serveru nije kako treba i programeri rade na ispravkama</li>
-                   	</ul>
+                    <p>Datum početka vaše rezervacije je još uvek u budućnosti, te je stoga nemoguće označiti znamenitost kao posećenu.</p>
                     <p>Nazad na <a href="/PD/guest" style="color:white;">početnu</a> stranu.</p>
                 </div>
             </center>

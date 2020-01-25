@@ -32,6 +32,9 @@
             <br>
             <label class="lbl-basic">Odabrati datum dolaska na planinu</label>
             <input name="date" type="date" class="input-d-basic" required>
+            <br>
+            <label class="lbl-basic">Uneti broj koliko dana ostajete na planini</label>
+            <input name="brDana" type="number" class="input-f-basic" title="Unesite broj" required>
             <br><br>
             <button class="btn-basic-out" type="submit">Pretraži</button>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
