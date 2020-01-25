@@ -10,7 +10,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -385,22 +387,24 @@ public class UlogeController {
 	
 	@GetMapping("/admin/generisiIzvestaj")
 	public void generisiIzvestaj(String idZ) throws JRException, IOException {
-//		Sta tacno treba da bude u izvestaju...
 		Integer id = Integer.parseInt(idZ);
 		Znamenitost znam = zrepo.findById(id).get();
 		
 		List<Termin> termini = znam.getTermins();
+		termini = termini.stream().filter(t -> t.getZakazujes() != null && t.getZakazujes().size() > 0).collect(Collectors.toList());
 		
 		response.setContentType("application/pdf");
-		JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(termini); // < =====================
+		JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(termini);
 		
-		InputStream in = this.getClass().getResourceAsStream("/jasperreports/izvestaj.jrxml"); //TU SMESTITI IZVESTAJ
+		InputStream in = this.getClass().getResourceAsStream("/jasperreports/izvestaj.jrxml");
 		JasperReport report = JasperCompileManager.compileReport(in);
 		
-//		Map<String, Object> param = new HashMap<String, Object>();
-//		param.put("", null);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("tip", znam.getTip());
+		param.put("planina", znam.getStaza().getPlanina().getNaziv());
+		param.put("opis", znam.getOpis());
 		
-		JasperPrint print = JasperFillManager.fillReport(report, null, source);
+		JasperPrint print = JasperFillManager.fillReport(report, param, source);
 		in.close();
 		
 		response.setContentType("application/x-download");
