@@ -199,7 +199,6 @@ public class UlogeController {
 	@PostMapping("/user/postaviSliku") 
 	public String postaviSliku(@RequestParam("file") MultipartFile file, String idP, String username) throws IOException {
 		
-		System.err.println(file);
 		byte[] b = file.getBytes();
 		
 		Korisnik k = krepo.findByKorisnickoIme(username).get();

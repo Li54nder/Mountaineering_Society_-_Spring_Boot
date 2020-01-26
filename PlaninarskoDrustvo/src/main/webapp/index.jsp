@@ -184,7 +184,7 @@
 	                    <tr>
 	                        <th>Planina</th>
 	                        <th>Broj poseta</th>
-	                        <th>Broj nocenja</th>
+	                        <th>Broj noćenja</th>
 	                    </tr>
 	                    <%! int br; long brNocenja;%>
 	                    <c:forEach var="p" items="${planine}">
@@ -213,7 +213,7 @@
 	            <div class="table">
 	                <table class="table-basic">
 	                    <tr>
-	                        <th>Znamenitost koje se rezervišu</th>
+	                        <th>Znamenitost za koje je neophodna rezervacija</th>
 	                        <th></th>
 	                        <th>Generiši izveštaj</th>
 	                    </tr>
