@@ -7,8 +7,11 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="pocetak" class="java.lang.String"/>
-	<field name="kraj" class="java.lang.String"/>
+	<field name="termin.pocetak" class="java.lang.String"/>
+	<field name="termin.kraj" class="java.lang.String"/>
+	<field name="rezervise.korisnik.ime" class="java.lang.String"/>
+	<field name="rezervise.korisnik.prezime" class="java.lang.String"/>
+	<field name="rezervise.pocetak" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -71,33 +74,20 @@
 	<columnHeader>
 		<band height="60" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="80" y="30" width="200" height="30" backcolor="#DBDBDB" uuid="f4b8601f-dcf2-4674-967e-459d49b91e86"/>
+				<reportElement mode="Opaque" x="351" y="30" width="198" height="30" backcolor="#DBDBDB" uuid="0d6d8d3b-06d3-41f1-a4a7-4887c527bb07"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Početak]]></text>
+				<text><![CDATA[Termin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="280" y="30" width="200" height="30" backcolor="#DBDBDB" uuid="0d6d8d3b-06d3-41f1-a4a7-4887c527bb07"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Kraj]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="80" y="0" width="400" height="30" backcolor="#DBDBDB" uuid="4386edb0-b016-462f-921b-ba208e5748c5"/>
+				<reportElement mode="Opaque" x="10" y="0" width="539" height="30" backcolor="#DBDBDB" uuid="4386edb0-b016-462f-921b-ba208e5748c5"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -109,40 +99,134 @@
 				</textElement>
 				<text><![CDATA[Spisak rezervisanih termina]]></text>
 			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="30" splitType="Stretch">
-			<textField>
-				<reportElement x="80" y="0" width="200" height="30" uuid="edb102ec-2558-4538-8e9f-17631d228b5e">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="628472c0-109a-4fcc-9f4f-c1d6d89b8fcd"/>
+			<staticText>
+				<reportElement mode="Opaque" x="103" y="30" width="100" height="30" backcolor="#DBDBDB" uuid="a43ec664-839d-457e-8b06-92cdc84543cf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prezime]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="10" y="30" width="93" height="30" backcolor="#DBDBDB" uuid="ca22eef2-6151-4373-b963-558f2a7d8b67"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ime]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="203" y="30" width="148" height="30" backcolor="#DBDBDB" uuid="8c871cbb-d59b-422e-82ff-81e4b409b590">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0333656b-e537-43cb-a595-a2142eaf9868"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{pocetak}]]></textFieldExpression>
-			</textField>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datum]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="280" y="0" width="200" height="30" uuid="b9ff354b-5ab8-4191-9809-b4bf62eae28a">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="814b6d0d-4ae6-4bad-829e-57beb04b5f4e"/>
+				<reportElement x="10" y="0" width="93" height="30" uuid="91ba805e-b5a4-4690-a78e-6f31573ddef7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28423efc-e94b-4c05-98c6-16b1e2caf629"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{kraj}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Liberation Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rezervise.korisnik.ime}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="351" y="0" width="89" height="30" uuid="07be7bba-0c3d-4c0a-8bbb-575dad6d5789"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Liberation Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{termin.pocetak}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="89" height="30" uuid="ea966973-53c6-4605-a4a9-297199f6b42c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9808702d-08ce-4b77-853d-ff9b5a93c728"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Liberation Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{termin.kraj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="0" width="148" height="30" uuid="e2456202-3d70-4e6d-8db5-9f2a44ce6b9f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0333656b-e537-43cb-a595-a2142eaf9868"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Liberation Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rezervise.pocetak}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="103" y="0" width="100" height="30" uuid="07ba16a9-6a4c-4136-8166-7592543ae382">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9476d83a-e23c-4be8-a997-d140a6e91c5b"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Liberation Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rezervise.korisnik.prezime}+"c"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="0" width="20" height="30" uuid="fa55590a-5ef1-4887-a876-422185a30a4c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="60" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch">

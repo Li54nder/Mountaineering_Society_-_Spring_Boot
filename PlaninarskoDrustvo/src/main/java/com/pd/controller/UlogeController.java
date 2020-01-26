@@ -390,11 +390,17 @@ public class UlogeController {
 		Integer id = Integer.parseInt(idZ);
 		Znamenitost znam = zrepo.findById(id).get();
 		
+//		List<Zakazuje> zakazujes = znam.getTermins().stream()
+//				.filter(t -> t.getZakazujes() != null && t.getZakazujes().size() > 0)
+//				.map(t -> t.getZakazujes())
+//				.flatMap(List::stream)
+//				.collect(Collectors.toList());
 		List<Termin> termini = znam.getTermins();
 		termini = termini.stream().filter(t -> t.getZakazujes() != null && t.getZakazujes().size() > 0).collect(Collectors.toList());
+		List<Zakazuje> zakazujes = termini.stream().map(z -> z.getZakazujes()).flatMap(List::stream).collect(Collectors.toList());
 		
 		response.setContentType("application/pdf");
-		JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(termini);
+		JRBeanCollectionDataSource source = new JRBeanCollectionDataSource(zakazujes);
 		
 		InputStream in = this.getClass().getResourceAsStream("/jasperreports/izvestaj.jrxml");
 		JasperReport report = JasperCompileManager.compileReport(in);
